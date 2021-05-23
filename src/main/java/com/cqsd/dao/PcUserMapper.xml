@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqsd.dao.PcUserMapper">
+    <!--指定实体类和数据库数据的对应关系-->
+    <resultMap id="BaseResultMap" type="com.cqsd.entity.PcUser">
+        <id column="C_ID" property="id"/>
+        <result column="C_EMAIL" property="email"/>
+        <result column="C_NAME" property="name"/>
+        <result column="C_PASSWORD" property="password"/>
+        <result column="C_PHONE" property="phone"/>
+        <result column="C_STATUS" property="status"/>
+        <result column="C_USER_NAME" property="username"/>
+        <result column="C_CREATE_DATE" property="createDate"/>
+        <result column="C_ORG_ID" property="orgId"/>
+    </resultMap>
+    <!--分页查询-->
+    <sql id="user">
+        C_ID,C_EMAIL,C_NAME,C_PASSWORD,C_PHONE,C_STATUS,C_USER_NAME,C_CREATE_DATE,C_ORG_ID
+    </sql>
+    <select id="findUser" resultMap="BaseResultMap"  parameterType="map">
+        SELECT
+        <include refid="user"/>
+        FROM pcm.PC_USER
+        limit #{page}, #{limit}
+    </select>
+</mapper>
