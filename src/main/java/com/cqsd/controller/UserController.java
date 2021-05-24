@@ -25,12 +25,14 @@ public class UserController {
     public String touser() {
         return "system/user";
     }
-
+    /**
+    * 后端服务请求的接口
+    * */
     @ResponseBody
     @RequestMapping(value = "/users")
     public ApiResponse users(@RequestParam Integer page, Integer limit) {
         Map<String, Object> param = new HashMap<>();
-        param.put("page", page);
+        param.put("page", page-1);
         param.put("limit", limit);
         List<PcUser> users = pcUserService.findUser(param);
         return ApiResponse.ok(users.size(),users);
