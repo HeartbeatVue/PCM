@@ -35,14 +35,16 @@ public class ApiResponse {
     }
     /**
      * 请求成功，返回提示信息
-     * @param msg
-     * @return
+     * @param msg 提示信息
+     * @return 成功信息
      * */
     public static ApiResponse ok(String msg){
         return new ApiResponse(msg,0);
     }
     /**
      * 请求失败
+     * @param msg 提示信息
+     * @return 失败信息
      * */
     public  static ApiResponse fail(String msg){
         return new ApiResponse(msg,1);

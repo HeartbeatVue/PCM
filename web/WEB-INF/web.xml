@@ -41,7 +41,16 @@
         <filter-name>CharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-
-
+    <!--log4j2-->
+<!--    <context-param>-->
+<!--        <param-name>log4jConfiguration</param-name>-->
+<!--        <param-value>config/log4j2.xml</param-value>-->
+<!--    </context-param>-->
+<!--    <context-param>-->
+<!--        <param-name>log4jRefreshInterval</param-name>-->
+<!--        <param-value>60000</param-value>-->
+<!--    </context-param>-->
+<!--    <listener>-->
+<!--        <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>-->
+<!--    </listener>-->
 </web-app>

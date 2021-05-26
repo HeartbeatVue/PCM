@@ -12,4 +12,11 @@ public interface PcUserMapper {
      * */
     List<PcUser> findUser(Map<String,Object> param);
 
+    /***
+     * 根据条件查询数据总条数
+     * @param param 数据总条数
+     * @return 数据条数
+     */
+    Integer count(Map<String,Object> param);
+
 }

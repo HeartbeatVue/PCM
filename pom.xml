@@ -33,17 +33,10 @@
             <artifactId>spring-jdbc</artifactId>
             <version>4.3.6.RELEASE</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.13.2</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.13.2</version>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
@@ -129,12 +122,7 @@
             <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.13.2</version>
-        </dependency>
+
 
     </dependencies>
 <!--检查该目录下的所有xml文件并存放到com/cqsd目录下-->
@@ -144,12 +132,33 @@
             <directory>src/main/java/com/cqsd</directory>
             <includes>
                 <include>**/*.xml</include>
+                <include>**/*.properties</include>
             </includes>
             <targetPath>com/cqsd</targetPath>
         </resource>
     </resources>
+    <plugins>
+        <!-- 添加该插件后，上述问题解决 -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>2.7</version>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <version>3.3</version>
+            <configuration>
+                <locales>zh_CN</locales>
+                <outputDirectory>${project.build.directory}/site</outputDirectory>
+                <relativizeDecorationLinks>false</relativizeDecorationLinks>
+            </configuration>
+        </plugin>
+    </plugins>
 </build>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
