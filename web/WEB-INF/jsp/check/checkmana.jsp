@@ -60,19 +60,22 @@
 
         table.render({
             elem: '#test'
-            , url: '<%=path%>/System/users'
+            , url: '<%=path%>/api/v1/info'
             , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             <%--, url: '<%=path%>/api/v1/users'--%>
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'id', width: 80, title: 'ID', sort: true}
-                , {field: 'username', width: 80, title: '用户名'}
-                , {field: 'name', width: 80, title: '姓名', sort: true}
-                , {field: 'phone', width: 80, title: '电话'}
-                , {field: 'email', title: '邮箱', width: '25%'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                , {field: 'orgid', title: '机构', sort: true, width: "15%"}
-                , {field: 'status', title: '状态', sort: true, width: "15%"}
+                , {field: 'name', width: 80, title: '检查名称'}
+                , {field: 'year', width: 80, title: '年度', sort: true}
+                , {field: 'mouth', width: 80, title: '月份'}
+                , {field: 'startDate', title: '开始时间', width: '25%'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                , {field: 'endDate', title: '结束时间', sort: true, width: "15%"}
+                , {field: 'dept', title: '发起部门', sort: true, width: "15%"}
+                , {field: 'checkObj', title: '检查对象', sort: true, width: "15%"}
+                , {field: 'checkCont', title: '检查内容', sort: true, width: "15%"}
+                , {field: 'createDate', title: '创建时间', sort: true, width: "15%"}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
 
             ]]

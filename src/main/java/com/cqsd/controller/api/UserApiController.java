@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-/***
+/**
  * 返回学生增删查改的API控制器
  */
 @RestController
@@ -24,7 +24,7 @@ public class UserApiController extends AbstractApiController{
     @Autowired
     private PcUserService pcUserService;
 
-    /***
+    /**
      * 返回学生所有json数据
      * @param page 当前页码
      * @param limit 每一页有多少条数据

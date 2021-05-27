@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqsd.dao.PcCheckInfoMapper">
+<resultMap id="BaseResultMap" type="com.cqsd.entity.PcCheckInfo">
+    <id property="id" column="C_ID"/>
+    <result property="name" column="C_NAME"/>
+    <result property="year" column="C_YEAR"/>
+    <result property="mouth" column="C_MOUTH"/>
+    <result property="startDate" column="C_START_DATE"/>
+    <result property="endDate" column="C_END_DATE"/>
+    <result property="dept" column="C_DEPT"/>
+    <result property="checkObj" column="C_CHECK_BOJ"/>
+    <result property="checkCont" column="C_CHECK_CONTENT"/>
+    <result property="userid" column="C_USER_ID"/>
+    <result property="createDate" column="C_CREATE_DATE"/>
+</resultMap>
+    <select id="AllRecord" resultMap="BaseResultMap">
+        SELECT * FROM pcm.PC_CHECK_INFO
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(C_ID) FROM pcm.PC_CHECK_INFO
+    </select>
+</mapper>
