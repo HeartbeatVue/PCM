@@ -44,6 +44,11 @@
   </div>
 </script>
 
+<script type="text/html" id="switchTpl">
+  <!-- 这里的 checked 的状态只是演示 -->
+  <input type="checkbox" name="sex" value="{{d.id}}" lay-skin="switch" lay-text="女|男" lay-filter="sexDemo" {{ d.id == 10003 ? 'checked' : '' }}>
+</script>
+
 <script type="text/html" id="barDemo">
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>

@@ -1,7 +1,6 @@
 package com.cqsd.utli;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.Set;
 /**
  * 分页方法控制器
  */
-//@Controller
 public class BaseController {
     @Autowired
     private HttpServletRequest request;

@@ -44,6 +44,11 @@
   </div>
 </script>
 
+<script type="text/html" id="switchTpl">
+  <!-- 这里的 checked 的状态只是演示 -->
+  <input type="checkbox" name="sex" value="{{d.status}}" lay-skin="switch" lay-text="开启|关闭" disabled lay-filter="sexDemo" {{ d.status == '1' ?  'checked' : '' }}>
+</script>
+
 <script type="text/html" id="barDemo">
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -67,12 +72,13 @@
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'id', width: 80, title: 'ID', sort: true}
-                , {field: 'username', width: 80, title: '用户名'}
+                , {field: 'username', width: 80, title: '用户名',sort: true}
                 , {field: 'name', width: 80, title: '姓名', sort: true}
-                , {field: 'phone', width: 80, title: '电话'}
-                , {field: 'email', title: '邮箱', width: '25%'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                , {field: 'phone', width: 120, title: '电话',sort: true}
+                , {field: 'email', title: '邮箱', width: '30%'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
                 , {field: 'orgid', title: '机构', sort: true, width: "15%"}
                 , {field: 'status', title: '状态', sort: true, width: "15%"}
+                ,{field:'status', title:'账号状态', width:120, templet: '#switchTpl', unresize: true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
 
             ]]
@@ -150,6 +156,12 @@
             });
         }
     });
+    layui.use('form', function(){
+        var form = layui.form;
+
+
+    });
+
 </script>
 
 </body>
