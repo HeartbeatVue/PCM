@@ -20,4 +20,18 @@ public class PcUserServiceImpl implements PcUserService {
         }
         return pcUserMapper.findUser(param);
     }
+
+    /**
+     * 根据ID删除用户
+     *
+     * @param id 用户主键
+     * @return 删除用户
+     */
+    @Override
+    public Integer delUserId(Integer id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID参数无效");
+        }
+        return pcUserMapper.delUserId(id);
+    }
 }

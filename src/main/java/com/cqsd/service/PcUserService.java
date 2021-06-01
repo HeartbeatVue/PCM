@@ -12,4 +12,10 @@ public interface PcUserService {
      * @return List
      * */
     List<PcUser> findUser(Map<String,Object> param);
+    /**
+     * 根据ID删除用户
+     * @param id 用户主键
+     * @return 删除用户
+     */
+    Integer delUserId(Integer id);
 }

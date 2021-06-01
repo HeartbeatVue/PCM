@@ -17,7 +17,7 @@
     <title>网站导航</title>
 </head>
 <body>
-<button type="button" class="btn btn-primary btn-block"><a class="rowColor" href="<c:url value="/main/index.htm"/>"
+<button type="button" class="btn btn-primary btn-block"><a class="rowColor" href="<c:url value="/main/index"/>"
                                                            style="text-decoration: none;">项目检查记录系统</a></button>
 </body>
 </html>

@@ -7,8 +7,8 @@ import com.cqsd.utli.ApiResponse;
 import com.cqsd.utli.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -22,13 +22,13 @@ public class CheckController extends BaseController {
     @Autowired
     private PcUserMapper pcUserMapper;
 
-    @RequestMapping(value = "/checker", method = RequestMethod.GET)
+    @GetMapping(value = "/checker")
     public String toucheck() {
         return "check/checkmana";
     }
 
     @ResponseBody
-    @RequestMapping(value = "info", method = RequestMethod.GET, headers = "Accept=application/json")
+    @GetMapping(value = "info", headers = "Accept=application/json")
     public ApiResponse check() {
         Map<String, Object> param = this.getSearchCondition();
         List<PcCheckInfo> checkInfoList = pcCheckInfoService.AllRecord(param);

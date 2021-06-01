@@ -17,6 +17,12 @@
     <sql id="user">
         C_ID,C_EMAIL,C_NAME,C_PASSWORD,C_PHONE,C_STATUS,C_USER_NAME,C_CREATE_DATE,C_ORG_ID
     </sql>
+    <!--根据ID删除用户信息-->
+    <delete id="delUserId" parameterType="int">
+        DELETE
+        FROM pcm.PC_USER
+        where C_ID = #{id}
+    </delete>
     <select id="findUser" resultMap="BaseResultMap" parameterType="map">
         SELECT
         <include refid="user"/>
@@ -37,7 +43,7 @@
             <if test="name !=null and name !=''">
                 C_NAME LIKE concat(#{name},"%")
             </if>
-            <if test="id !=null and id !=''" >
+            <if test="id !=null and id !=''">
                 C_ID LIKE concat(#{id},"%")
             </if>
         </where>

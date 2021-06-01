@@ -4,14 +4,17 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Api返回工具
+ */
 @Data
 public class ApiResponse {
     private int code;
     private String msg;
     private int count;
-    private List data;
+    private List<?> data;
 
-    public ApiResponse(int count, List data) {
+    public ApiResponse(int count, List<?> data) {
         this.code = 0;
         this.msg = "";
         this.count = count;
@@ -26,11 +29,11 @@ public class ApiResponse {
 
     /**
      *请求成功，返回分页数据
-     * @param count
-     * @param data
-     * @return
+     * @param count 分页数据
+     * @param data  返回的数据
+     * @return json数据
      * */
-    public static ApiResponse ok(int count,List data){
+    public static ApiResponse ok(int count,List<?> data){
         return new ApiResponse(count, data);
     }
     /**
