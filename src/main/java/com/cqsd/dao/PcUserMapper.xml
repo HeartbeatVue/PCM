@@ -27,7 +27,7 @@
             C_USER_NAME=#{username},
             C_EMAIL=#{email},
             C_PHONE=#{phone},
-            C_PASSWORD=#{PASSWORD},
+            C_PASSWORD=#{password},
             C_ORG_ID=#{orgId},
             C_STATUS=#{status}
         WHERE C_ID = #{id}

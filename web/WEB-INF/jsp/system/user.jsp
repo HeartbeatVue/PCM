@@ -37,7 +37,7 @@
 </span>
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
-<%--TODO 添加用户表单弹出框--%>
+<%--TODO 添加用户数据表单弹出框--%>
 <div id="userFormDialog" style="display: none"><%--隐藏div--%>
     <form class="layui-form" id="userForm" lay-filter="userForm" style="padding-top: 15px">
         <div class="layui-inline">
@@ -83,9 +83,10 @@
         </div>
     </form>
 </div>
-<%--TODO update表单弹出框--%>
+<%--TODO 更新用户数据表单弹出框--%>
 <div id="userUpdate" style="display: none"><%--隐藏div--%>
-    <form class="layui-form" id="userForm" lay-filter="userUpdate" style="padding-top: 15px">
+    <form class="layui-form" id="userUpdate" lay-filter="userUpdate" style="padding-top: 15px">
+        <input name="id" style="display: none">
         <div class="layui-inline">
             <label class="layui-form-label">姓名</label>
             <div class="layui-input-inline">
@@ -158,95 +159,9 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
 
 <script>
-    function delUser(id) {
-        //根据用户ID删除
-        $.ajax({
-            url: '<%=path%>/System/delUser?id=' + id,
-            type: "GET",
-            dataType: 'json',//服务端返回给客户端的数据类型是json数据
-            success: function (res) {
-                console.log(res)
-                /*设置延时*/
-                // layer.close(index)
-                UserReload()
-                // UserReload()
-            }, error: function (err) {
-
-            }
-        })
-    }
-
-    //TODO 通过ID更新
-    function update(id) {
-        $.ajax({
-            url: '<%=path%>/System/update?id=' + id
-            , type: "POST"
-            , dataType: 'json'
-            , data: JSON.stringify("userUpdate")
-            , success: function (res) {
-                console.log(res)
-                layer.close(index);
-                $("#userUpdate")[0].reset();
-                UserReload()
-            }
-        })
-    }
-
-    //TODO 保存用户数据
-    function saveUser(index) {
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
         var form = layui.form;
-        var $ = layui.$
-        var user = form.val('userForm');//获取表单中的数据
-        $.ajax({
-            url: "<%=path%>/System/save"//将json提交到服务器
-            , type: "POST"
-            , contentType: "application/json"//
-            , dataType: "json"
-            , data: JSON.stringify(user)
-            , success: function (res) {
-                //关闭弹出框
-                layer.close(index);
-                //弹出层提示信息
-                // msgBox(res);
-                //刷新表格数据
-                $("#userForm")[0].reset();
-                UserReload()
-            }
-            , error: function (err) {
-                // layer.msg(err,{icon:2})
-            }
-        })
-    }
-
-    //表格数据重载
-    function UserReload() {
-        var $ = layui.$
-        //获取input输入框的demoReload对象
-        var demoReload = $('#demoReload');
-        var demoReload1 = $('#demoReload1');
-        var table = layui.table;
-        //执行重载，第一个参数是表格的ID
-        table.reload('test', {
-            page: {
-                curr: 1 //重新从第 1 页开始
-            }
-            , where: {
-                //获取输入框中的值
-                name: demoReload.val(),
-                id: demoReload1.val()
-            }
-        });
-    }
-
-    var $ = layui.$, active = {
-
-        reload: function () {
-            //用户表格重载
-            UserReload();
-        }
-    };
-    layui.use('table', function () {
-        var table = layui.table;
         table.render({
             elem: '#test'
             , url: '<%=path%>/System/users'
@@ -264,7 +179,6 @@
                 , {field: 'status', title: '状态', sort: true, width: "80"}
                 , {field: 'status', title: '账号状态', width: 120, templet: '#switchTpl', unresize: true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 180}
-
             ]]
             , page: true
             , autoSort: false
@@ -280,18 +194,22 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
-                //TODO 编辑用户
-                openFormDiam("编辑用户", null, $('#userUpdate'))
+                //TODO 使用编辑用户方法
+                openFormDiam("编辑用户", data, $('#userUpdate'), () => update(data))
             } else if (obj.event === "add") {
-                //TODO 添加方法
+                //TODO 使用添加方法
                 //弹出一个信息框
-                openFormDiam("新增用户", null, $('#userFormDialog'), () => saveUser())
+                openFormDiam("新增用户", null, $('#userFormDialog'), () => saveUser(this.yes.index))
                 console.log("add")
             }
         });
         // TODO 创建弹出框方法
         // 创建弹出框
         function openFormDiam(title, data, id, func) {
+            if (data != null) {
+                console.log(data)
+                form.val('userUpdate', data);
+            }
             layer.open({
                 title: title//弹出层标题
                 , type: 1//弹出层类型
@@ -302,7 +220,7 @@
                 , btn: ['保存', '取消']
                 , yes: function (index, layer) {
                     //保存按钮的回调方法,index是弹出层的id
-                    func(index);
+                    func();
                     // saveUser(index)
                     // update(id)
                 }
@@ -315,55 +233,103 @@
             })
         }
 
-        //TODO 头工具栏事件
-        table.on('toolbar(test)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
-            switch (obj.event) {
-                case 'getCheckData':
-                    var data = checkStatus.data;
-                    layer.alert(JSON.stringify(data));
-                    break;
-                case 'getCheckLength':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
-                case 'isAll':
-                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
-                    break;
 
-                //自定义头工具栏右侧图标 - 提示
-                case 'LAYTABLE_TIPS':
-                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
-                    break;
+        //TODO 这是一大波方法
+        //TODO ajax保存用户数据
+        function saveUser(index) {
+            var form = layui.form;
+            var $ = layui.$
+            var user = form.val('userForm');//获取表单中的数据
+            $.ajax({
+                url: "<%=path%>/System/save"//将json提交到服务器
+                , type: "POST"
+                , contentType: "application/json"//
+                , dataType: "json"
+                , data: JSON.stringify(user)
+                , success: function (res) {
+                    //关闭弹出框
+                    layer.close(index);
+                    //弹出层提示信息
+                    // msgBox(res);
+                    //刷新表格数据
+                    $("#userForm")[0].reset();
+                    UserReload()
+                }
+                , error: function (err) {
+                    // layer.msg(err,{icon:2})
+                }
+            })
+        }
+
+        //TODO ajax通过ID更新的主方法
+        function update() {
+            var form = layui.form;
+            var $ = layui.$
+            var userUpdate = form.val('userUpdate');//获取表单中的数据
+            $.ajax({
+                url: '<%=path%>/System/update'
+                , type: "POST"
+                , dataType: 'json'
+                , contentType: "application/json"//
+                , data: JSON.stringify(userUpdate)
+                , success: function (res) {
+                    console.log(res)
+                    // layer.close(index);
+                    $("#userUpdate")[0].reset();
+                    UserReload()
+                }
+            })
+        }
+
+        //TODO ajax通过ID删除
+        function delUser(id) {
+            //根据用户ID删除
+            $.ajax({
+                url: '<%=path%>/System/delUser?id=' + id,
+                type: "GET",
+                dataType: 'json',//服务端返回给客户端的数据类型是json数据
+                success: function (res) {
+                    console.log(res)
+                    /*设置延时*/
+                    // layer.close(index)
+                    UserReload()
+                    // UserReload()
+                }, error: function (err) {
+
+                }
+            })
+        }
+
+
+
+
+        //TODO 用户表格重载
+        var $ = layui.$, active = {
+
+            reload: function () {
+                //用户表格重载
+                UserReload();
             }
-
-
-            //给搜索按钮绑定点击事件
-            $('.demoTable .layui-btn').on('click', function () {
-                //获取data-type按钮的reload
-                var type = $(this).data('type');
-                active[type] ? active[type].call(this) : '';
+        };
+        //表格数据重载实现方法
+        function UserReload() {
+            var $ = layui.$
+            //获取input输入框的demoReload对象
+            var demoReload = $('#demoReload');
+            var demoReload1 = $('#demoReload1');
+            var table = layui.table;
+            //执行重载，第一个参数是表格的ID
+            table.reload('test', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                , where: {
+                    //获取输入框中的值
+                    name: demoReload.val(),
+                    id: demoReload1.val()
+                }
             });
-            //触发排序事件
-            table.on('sort(test)', function (obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-                console.log(obj.field); //当前排序的字段名
-                console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
-                console.log(this); //当前排序的 th 对象
-
-                //尽管我们的 table 自带排序功能，但并没有请求服务端。
-                //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
-                table.reload('idTest', {
-                    initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-                    , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-                        field: obj.field //排序字段
-                        , order: obj.type //排序方式
-                    }
-                });
-
-                layer.msg('服务端排序。order by ' + obj.field + ' ' + obj.type);
-            });
-        });
-
+        }
     });
 </script>
 
