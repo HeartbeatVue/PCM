@@ -112,7 +112,6 @@
             <div class="layui-input-inline">
                 <input type="text" name="email" autocomplete="off" class="layui-input">
             </div>
-
             <div class="layui-inline">
                 <label class="layui-form-label">机构</label>
                 <div class="layui-input-inline">
@@ -152,12 +151,8 @@
     <input type="checkbox" name="sex" value="{{d.status}}" lay-skin="switch" lay-text="开启|关闭" disabled
            lay-filter="sexDemo" {{ d.status== '1' ?  'checked' : '' }}>
 </script>
-
-<%--</span>--%>
-
 <script src="<%=path%>/resources/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
-
 <script>
     layui.use(['table', 'form'], function () {
         var table = layui.table;
@@ -299,10 +294,6 @@
                 }
             })
         }
-
-
-
-
         //TODO 用户表格重载
         var $ = layui.$, active = {
 
