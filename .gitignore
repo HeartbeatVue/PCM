@@ -2,3 +2,4 @@
 /out/
 /target/
 web/config/db.properties
+/.idea/

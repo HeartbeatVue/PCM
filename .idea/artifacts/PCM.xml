@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="PCM">
-    <output-path>$PROJECT_DIR$/out/artifacts/PCM</output-path>
-    <root id="archive" name="PCM.war">
-      <element id="artifact" artifact-name="PCM:war exploded" />
-    </root>
-  </artifact>
-</component>
