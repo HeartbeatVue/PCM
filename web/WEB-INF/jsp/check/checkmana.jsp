@@ -41,12 +41,14 @@
     <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
     <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
     <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    <button class="layui-btn layui-btn-sm layui-btn-checked" data-type="add">新增</button>
   </div>
 </script>
 
 <script type="text/html" id="switchTpl">
   <!-- 这里的 checked 的状态只是演示 -->
-  <input type="checkbox" name="sex" value="{{d.id}}" lay-skin="switch" lay-text="女|男" lay-filter="sexDemo" {{ d.id == 10003 ? 'checked' : '' }}>
+  <input type="checkbox" name="sex" value="{{d.status}}" lay-skin="switch" lay-text="开启|关闭" disabled
+         lay-filter="sexDemo" {{ d.status== '1' ?  'checked' : '' }}>
 </script>
 
 <script type="text/html" id="barDemo">
@@ -115,42 +117,42 @@
     });
 
     //头工具栏事件
-    table.on('toolbar(test)', function(obj){
+    table.on('toolbar(test)', function (obj) {
         var checkStatus = table.checkStatus(obj.config.id);
-        switch(obj.event){
+        switch (obj.event) {
             case 'getCheckData':
                 var data = checkStatus.data;
                 layer.alert(JSON.stringify(data));
                 break;
             case 'getCheckLength':
                 var data = checkStatus.data;
-                layer.msg('选中了：'+ data.length + ' 个');
+                layer.msg('选中了：' + data.length + ' 个');
                 break;
             case 'isAll':
-                layer.msg(checkStatus.isAll ? '全选': '未全选');
+                layer.msg(checkStatus.isAll ? '全选' : '未全选');
                 break;
 
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
                 layer.alert('这是工具栏右侧自定义的一个图标按钮');
                 break;
-        };
+        }
     });
 
     //监听行工具事件
-    table.on('tool(test)', function(obj){
+    table.on('tool(test)', function (obj) {
         var data = obj.data;
         //console.log(obj)
-        if(obj.event === 'del'){
-            layer.confirm('真的删除行么', function(index){
+        if (obj.event === 'del') {
+            layer.confirm('真的删除行么', function (index) {
                 obj.del();
                 layer.close(index);
             });
-        } else if(obj.event === 'edit'){
+        } else if (obj.event === 'edit') {
             layer.prompt({
                 formType: 2
-                ,value: data.email
-            }, function(value, index){
+                , value: data.email
+            }, function (value, index) {
                 obj.update({
                     email: value
                 });

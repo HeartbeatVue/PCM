@@ -17,6 +17,21 @@
     <sql id="user">
         C_ID,C_EMAIL,C_NAME,C_PASSWORD,C_PHONE,C_STATUS,C_USER_NAME,C_CREATE_DATE,C_ORG_ID
     </sql>
+    <insert id="saveUser" parameterType="com.cqsd.entity.PcUser">
+        INSERT INTO pcm.PC_USER(C_NAME, C_USER_NAME, C_EMAIL, C_PHONE, C_PASSWORD, C_ORG_ID, C_STATUS, C_CREATE_DATE)
+        VALUES (#{name}, #{username}, #{email}, #{phone}, #{password}, #{orgId}, #{status}, #{createDate})
+    </insert>
+    <update id="updateUser">
+        UPDATE pcm.PC_USER
+        SET C_NAME=#{name},
+            C_USER_NAME=#{username},
+            C_EMAIL=#{email},
+            C_PHONE=#{phone},
+            C_PASSWORD=#{PASSWORD},
+            C_ORG_ID=#{orgId},
+            C_STATUS=#{status}
+        WHERE C_ID = #{id}
+    </update>
     <!--根据ID删除用户信息-->
     <delete id="delUserId" parameterType="int">
         DELETE

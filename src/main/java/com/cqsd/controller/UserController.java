@@ -5,12 +5,10 @@ import com.cqsd.entity.PcUser;
 import com.cqsd.service.PcUserService;
 import com.cqsd.utli.ApiResponse;
 import com.cqsd.utli.BaseController;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,19 +50,11 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @GetMapping(value = "/users", headers = "Accept=application/json")
-//    @RequestMapping(value = "/users", method = RequestMethod.GET, headers = "Accept=application/json")
-    public ApiResponse users(/*@RequestParam() Integer page, Integer limit, String name,Integer id*/) {
+    public ApiResponse users() {
         Map<String, Object> param = this.getSearchCondition();
-//        System.out.println("page = " + page + ", limit = " + limit + "计算前的数据");
-//        param.put("page", (page - 1) * limit);
-//        param.put("limit", limit);
-//        param.put("name", name);
-//        param.put("id",id);
-
         List<PcUser> users = pcUserService.findUser(param);
         //取出总条数
         int count = pcUserMapper.count(param);
-//        System.out.println("page = " + page + ", limit = " + limit + "计算后的数据");
         return ApiResponse.ok(count, users);
     }
 
@@ -85,5 +75,42 @@ public class UserController extends BaseController {
             return ApiResponse.fail(e.getMessage());
         }
 
+    }
+
+    /**
+     * 保存方法请求的接口
+     *
+     * @param user 用户实体类
+     * @return 用户保存成功或失败
+     */
+    @ResponseBody
+    @PostMapping(value = "/save")
+    public ApiResponse saveUser(@RequestBody PcUser user) {
+        try {
+            pcUserService.saveUser(user);
+            return ApiResponse.ok("保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResponse.fail(e.getMessage());
+        }
+
+    }
+
+    /**
+     * 通过用户ID来更新数据
+     *
+     * @param user 用户所有信息
+     * @return 用户修改成功或失败
+     */
+    @ResponseBody
+    @PostMapping(value = "/update")
+    public ApiResponse updateUser(@RequestBody PcUser user) {
+        try {
+            pcUserService.updateUser(user);
+            return ApiResponse.ok("保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResponse.fail(e.getMessage());
+        }
     }
 }

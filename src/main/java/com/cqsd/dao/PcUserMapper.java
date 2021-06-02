@@ -29,4 +29,16 @@ public interface PcUserMapper {
      * @return 删除用户
      */
     Integer delUserId(Integer id);
+
+    /**
+     * 添加用户数据
+     * @param user 用户所有信息
+     */
+    void saveUser(PcUser user);
+
+    /**
+     * 通过用户ID修改数据
+     * @param user 用户所有信息
+     */
+    void updateUser(PcUser user);
 }
