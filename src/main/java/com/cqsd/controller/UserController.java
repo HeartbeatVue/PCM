@@ -7,6 +7,7 @@ import com.cqsd.utli.ApiResponse;
 import com.cqsd.utli.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,6 +67,7 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @GetMapping(value = "/delUser")
+    @Transactional
     public ApiResponse delUser(Integer id) {
         try {
             pcUserService.delUserId(id);
@@ -85,6 +87,7 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @PostMapping(value = "/save")
+    @Transactional
     public ApiResponse saveUser(@RequestBody PcUser user) {
         try {
             pcUserService.saveUser(user);
@@ -104,10 +107,11 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @PostMapping(value = "/update")
+    @Transactional
     public ApiResponse updateUser(@RequestBody PcUser user) {
         try {
             pcUserService.updateUser(user);
-            return ApiResponse.ok("保存成功");
+            return ApiResponse.ok("修改成功");
         } catch (Exception e) {
             e.printStackTrace();
             return ApiResponse.fail(e.getMessage());

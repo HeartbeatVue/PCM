@@ -12,4 +12,6 @@ public interface PcCheckInfoMapper {
     List<PcCheckInfo> AllRecord(Map<String, Object> param);
 
     Integer count(Map<String, Object> param);
+
+    Integer delUserId(Integer id);
 }

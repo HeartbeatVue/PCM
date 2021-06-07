@@ -4,6 +4,7 @@
     <!--指定实体类和数据库数据的对应关系-->
     <resultMap id="BaseResultMap" type="com.cqsd.entity.PcUser">
         <id column="C_ID" property="id"/>
+
         <result column="C_EMAIL" property="email"/>
         <result column="C_NAME" property="name"/>
         <result column="C_PASSWORD" property="password"/>
@@ -11,15 +12,20 @@
         <result column="C_STATUS" property="status"/>
         <result column="C_USER_NAME" property="username"/>
         <result column="C_CREATE_DATE" property="createDate"/>
-        <result column="C_ORG_ID" property="orgId"/>
+<!--        <result column="C_ORG_ID" property="orgId"/>-->
+        <association property="pcOrgInfo" javaType="com.cqsd.entity.PcOrgInfo">
+            <id column="ORG_ID" property="id"/>
+            <result column="ShrotName" property="orgShort"/>
+        </association>
     </resultMap>
     <!--分页查询-->
     <sql id="user">
-        C_ID,C_EMAIL,C_NAME,C_PASSWORD,C_PHONE,C_STATUS,C_USER_NAME,C_CREATE_DATE,C_ORG_ID
+        PC_USER.C_ID,C_EMAIL,C_NAME,C_PASSWORD,C_PHONE,C_STATUS,C_USER_NAME,C_CREATE_DATE,C_ORG_ID,
+        POI.C_ORG_SHROT_NAME as ShrotName,POI.C_ID as ORG_ID
     </sql>
     <insert id="saveUser" parameterType="com.cqsd.entity.PcUser">
         INSERT INTO pcm.PC_USER(C_NAME, C_USER_NAME, C_EMAIL, C_PHONE, C_PASSWORD, C_ORG_ID, C_STATUS, C_CREATE_DATE)
-        VALUES (#{name}, #{username}, #{email}, #{phone}, #{password}, #{orgId}, #{status}, #{createDate})
+        VALUES (#{name}, #{username}, #{email}, #{phone}, #{password}, #{pcOrgInfo.id}, #{status}, #{createDate})
     </insert>
     <update id="updateUser">
         UPDATE pcm.PC_USER
@@ -41,13 +47,13 @@
     <select id="findUser" resultMap="BaseResultMap" parameterType="map">
         SELECT
         <include refid="user"/>
-        FROM pcm.PC_USER
+        FROM pcm.PC_USER left join PC_ORG_INFO POI on PC_USER.C_ORG_ID = POI.C_ID
         <where>
             <if test="name !=null and name!=''">
                 C_NAME LIKE concat(#{name},"%")
             </if>
             <if test="id !=null and id !=''">
-                OR C_ID LIKE concat(#{id},"%")
+                OR u.C_ID LIKE concat(#{id},"%")
             </if>
         </where>
         limit #{page}, #{limit}

@@ -1,4 +1,12 @@
 <%--
+  ~ Copyright (c) 2021. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  --%>
+
+<%--
   Created by IntelliJ IDEA.
   User: caseycheng
   Date: 2021/5/19
@@ -133,17 +141,24 @@
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-group demoTable">
-        <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
-        <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
-        <button class="layui-btn" data-type="isAll">验证是否全选</button>
-        <button class="layui-btn" data-type="add">新增</button>
+        <button class="layui-btn " data-type="getCheckData">获取选中行数据</button>
+        <button class="layui-btn " data-type="getCheckLength">获取选中数目</button>
+        <button class="layui-btn " data-type="isAll">验证是否全选</button>
+        <button class="layui-btn " data-type="add">新增</button>
     </div>
 </script>
-
+    <%--操作工具栏--%>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs layui-btn-checked" lay-event="add">新增</a>
+    <button type="button" class="layui-btn layui-btn-sm">
+        <i class="layui-icon" lay-event="edit">&#xe642;</i>
+    </button>
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+        <i class="layui-icon" lay-event="del">&#xe640;</i>
+    </button>
+    <button type="button" class="layui-btn layui-btn-sm">
+        <i class="layui-icon" lay-event="add">&#xe654;</i>
+    </button>
+
 </script>
 
 <script type="text/html" id="switchTpl">
@@ -161,7 +176,6 @@
             elem: '#test'
             , url: '<%=path%>/System/users'
             , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-            <%--, url: '<%=path%>/api/v1/users'--%>
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
@@ -170,7 +184,13 @@
                 , {field: 'name', width: 80, title: '姓名', sort: true}
                 , {field: 'phone', width: 120, title: '电话', sort: true}
                 , {field: 'email', title: '邮箱', width: '160'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                , {field: 'orgId', title: '机构', sort: true, width: "80"}
+                , {
+                    field: 'pcOrgInfo',
+                    title: '机构',
+                    sort: true,
+                    width: "160",
+                    templet: '<span>{{d.pcOrgInfo!=null?d.pcOrgInfo.orgShort:""}}</span>'
+                }
                 , {field: 'status', title: '状态', sort: true, width: "80"}
                 , {field: 'status', title: '账号状态', width: 120, templet: '#switchTpl', unresize: true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 180}
@@ -178,7 +198,103 @@
             , page: true
             , autoSort: false
         });
-        //监听行工具事件
+        //TODO 这是一大波方法
+        //TODO ajax保存用户数据
+        function saveUser(index) {
+            var form = layui.form;
+            var $ = layui.$
+            var user = form.val('userForm');//获取表单中的数据
+            $.ajax({
+                url: "<%=path%>/System/save"//将json提交到服务器
+                , type: "POST"
+                , contentType: "application/json"//
+                , dataType: "json"
+                , data: JSON.stringify(user)
+                , success: function (res) {
+                    //关闭弹出框
+                    console.log(res)
+                    layer.close(index);
+                    //弹出层提示信息
+                    // msgBox(res);
+                    //刷新表格数据
+                    $("#userForm")[0].reset();
+                    UserReload()
+                }
+                , error: function (err) {
+                    // layer.msg(err,{icon:2})
+                }
+            })
+        }
+
+        //TODO ajax通过ID更新的主方法
+        function update() {
+            var form = layui.form;
+            var $ = layui.$
+            var userupdate = form.val('userUpdate');//获取表单中的数据
+            $.ajax({
+                url: '<%=path%>/System/update'
+                , type: "POST"
+                , dataType: 'json'
+                , contentType: "application/json"//
+                , data: JSON.stringify(userupdate)
+                , success: function (res) {
+                    console.log(res)
+                    // layer.close(index);
+                    // document.getElementById('userUpdate').reset();
+                    $('#userUpdate form')[0].reset()
+                    UserReload()
+                }
+            })
+        }
+        //TODO ajax通过ID删除
+        function delUser(id) {
+            //根据用户ID删除
+            $.ajax({
+                url: '<%=path%>/System/delUser?id=' + id,
+                type: "GET",
+                dataType: 'json',//服务端返回给客户端的数据类型是json数据
+                success: function (res) {
+                    console.log(res)
+                    /*设置延时*/
+                    // layer.close(index)
+                    UserReload()
+                    // UserReload()
+                }, error: function (err) {
+
+                }
+            })
+        }
+
+        //TODO 用户表格重载
+        var $ = layui.$, active = {
+
+            reload: function () {
+                //用户表格重载
+                UserReload();
+            }
+        };
+
+        //表格数据重载实现方法
+        function UserReload() {
+            var $ = layui.$
+            //获取input输入框的demoReload对象
+            var demoReload = $('#demoReload');
+            var demoReload1 = $('#demoReload1');
+            var table = layui.table;
+            //执行重载，第一个参数是表格的ID
+            table.reload('test', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                , where: {
+                    //获取输入框中的值
+                    name: demoReload.val(),
+                    id: demoReload1.val()
+                }
+            });
+        }
+
+        //TODO 监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             //console.log(obj)
@@ -190,11 +306,13 @@
                 });
             } else if (obj.event === 'edit') {
                 //TODO 使用编辑用户方法
+                $('#userUpdate form')[0].reset()
                 openFormDiam("编辑用户", data, $('#userUpdate'), () => update(data))
             } else if (obj.event === "add") {
                 //TODO 使用添加方法
                 //弹出一个信息框
-                openFormDiam("新增用户", null, $('#userFormDialog'), () => saveUser(this.yes.index))
+                $("#userForm")[0].reset();
+                openFormDiam("新增用户", null, $('#userFormDialog'), () => saveUser())
                 console.log("add")
             }
         });
@@ -215,7 +333,7 @@
                 , btn: ['保存', '取消']
                 , yes: function (index, layer) {
                     //保存按钮的回调方法,index是弹出层的id
-                    func();
+                    func(index);
                     // saveUser(index)
                     // update(id)
                 }
@@ -227,102 +345,8 @@
                 }
             })
         }
-
-
-        //TODO 这是一大波方法
-        //TODO ajax保存用户数据
-        function saveUser(index) {
-            var form = layui.form;
-            var $ = layui.$
-            var user = form.val('userForm');//获取表单中的数据
-            $.ajax({
-                url: "<%=path%>/System/save"//将json提交到服务器
-                , type: "POST"
-                , contentType: "application/json"//
-                , dataType: "json"
-                , data: JSON.stringify(user)
-                , success: function (res) {
-                    //关闭弹出框
-                    layer.close(index);
-                    //弹出层提示信息
-                    // msgBox(res);
-                    //刷新表格数据
-                    $("#userForm")[0].reset();
-                    UserReload()
-                }
-                , error: function (err) {
-                    // layer.msg(err,{icon:2})
-                }
-            })
-        }
-
-        //TODO ajax通过ID更新的主方法
-        function update() {
-            var form = layui.form;
-            var $ = layui.$
-            var userUpdate = form.val('userUpdate');//获取表单中的数据
-            $.ajax({
-                url: '<%=path%>/System/update'
-                , type: "POST"
-                , dataType: 'json'
-                , contentType: "application/json"//
-                , data: JSON.stringify(userUpdate)
-                , success: function (res) {
-                    console.log(res)
-                    // layer.close(index);
-                    $("#userUpdate")[0].reset();
-                    UserReload()
-                }
-            })
-        }
-
-        //TODO ajax通过ID删除
-        function delUser(id) {
-            //根据用户ID删除
-            $.ajax({
-                url: '<%=path%>/System/delUser?id=' + id,
-                type: "GET",
-                dataType: 'json',//服务端返回给客户端的数据类型是json数据
-                success: function (res) {
-                    console.log(res)
-                    /*设置延时*/
-                    // layer.close(index)
-                    UserReload()
-                    // UserReload()
-                }, error: function (err) {
-
-                }
-            })
-        }
-        //TODO 用户表格重载
-        var $ = layui.$, active = {
-
-            reload: function () {
-                //用户表格重载
-                UserReload();
-            }
-        };
-        //表格数据重载实现方法
-        function UserReload() {
-            var $ = layui.$
-            //获取input输入框的demoReload对象
-            var demoReload = $('#demoReload');
-            var demoReload1 = $('#demoReload1');
-            var table = layui.table;
-            //执行重载，第一个参数是表格的ID
-            table.reload('test', {
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-                , where: {
-                    //获取输入框中的值
-                    name: demoReload.val(),
-                    id: demoReload1.val()
-                }
-            });
-        }
     });
-</script>
 
+</script>
 </body>
 </html>
