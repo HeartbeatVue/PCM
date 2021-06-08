@@ -45,7 +45,7 @@
 </span>
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
-<%--TODO 添加用户数据表单弹出框--%>
+<%-- 添加用户数据表单弹出框--%>
 <div id="userFormDialog" style="display: none"><%--隐藏div--%>
     <form class="layui-form" id="userForm" lay-filter="userForm" style="padding-top: 15px">
         <div class="layui-inline">
@@ -91,7 +91,7 @@
         </div>
     </form>
 </div>
-<%--TODO 更新用户数据表单弹出框--%>
+<%-- 更新用户数据表单弹出框--%>
 <div id="userUpdate" style="display: none"><%--隐藏div--%>
     <form class="layui-form" id="userUpdate" lay-filter="userUpdate" style="padding-top: 15px">
         <input name="id" style="display: none">
@@ -188,7 +188,7 @@
                     field: 'pcOrgInfo',
                     title: '机构',
                     sort: true,
-                    width: "160",
+                    width: "80",
                     templet: '<span>{{d.pcOrgInfo!=null?d.pcOrgInfo.orgShort:""}}</span>'
                 }
                 , {field: 'status', title: '状态', sort: true, width: "80"}
@@ -198,8 +198,8 @@
             , page: true
             , autoSort: false
         });
-        //TODO 这是一大波方法
-        //TODO ajax保存用户数据
+        // 这是一大波方法
+        // ajax保存用户数据
         function saveUser(index) {
             var form = layui.form;
             var $ = layui.$
@@ -226,7 +226,7 @@
             })
         }
 
-        //TODO ajax通过ID更新的主方法
+        // ajax通过ID更新的主方法
         function update() {
             var form = layui.form;
             var $ = layui.$
@@ -246,7 +246,7 @@
                 }
             })
         }
-        //TODO ajax通过ID删除
+        // ajax通过ID删除
         function delUser(id) {
             //根据用户ID删除
             $.ajax({
@@ -265,7 +265,7 @@
             })
         }
 
-        //TODO 用户表格重载
+        // 用户表格重载
         var $ = layui.$, active = {
 
             reload: function () {
@@ -294,7 +294,7 @@
             });
         }
 
-        //TODO 监听行工具事件
+        // 监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             //console.log(obj)
@@ -305,18 +305,18 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
-                //TODO 使用编辑用户方法
+                // 使用编辑用户方法
                 $('#userUpdate form')[0].reset()
                 openFormDiam("编辑用户", data, $('#userUpdate'), () => update(data))
             } else if (obj.event === "add") {
-                //TODO 使用添加方法
+                // 使用添加方法
                 //弹出一个信息框
                 $("#userForm")[0].reset();
                 openFormDiam("新增用户", null, $('#userFormDialog'), () => saveUser())
                 console.log("add")
             }
         });
-        // TODO 创建弹出框方法
+        //  创建弹出框方法
         // 创建弹出框
         function openFormDiam(title, data, id, func) {
             if (data != null) {

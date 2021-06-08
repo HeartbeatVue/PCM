@@ -166,6 +166,22 @@
             })
         }
 
+        function update() {
+            // var userupdate = form.val('userUpdate');//获取表单中的数据
+            $.ajax({
+                url: '<%=path%>/api/v1/Check/update'
+                , type: "POST"
+                , dataType: 'json'
+                , contentType: "application/json"//
+                , data: JSON.stringify(/*userupdate*/)
+                , success: function (res) {
+                    console.log(res)
+                    // layer.close(index);
+                    // document.getElementById('userUpdate').reset();
+                    $('#userUpdate form')[0].reset()
+                    UserReload()
+                })
+        }
 
     });
 

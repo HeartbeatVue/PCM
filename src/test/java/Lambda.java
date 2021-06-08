@@ -27,9 +27,11 @@ public class Lambda {
                     to();
                 }
         ).start();
-        Runnable runnable = () -> this.to(); {
+        Runnable runnable = () -> this.to();
+        {
             System.out.println();
-        };
+        }
+        ;
         runnable.run();
 
     }
