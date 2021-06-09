@@ -8,15 +8,36 @@
 
 package com.cqsd.controller;
 
+import com.cqsd.service.PcOrgInfoService;
+import com.cqsd.utli.ApiResponse;
+import com.cqsd.utli.TreeNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "org")
 public class OrgController {
+    @Autowired
+    private PcOrgInfoService service;
+
     @GetMapping(value = "/main")
     public String toOrg() {
         return "org/org";
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/allTreeNode")
+    public ApiResponse findAllTreeNode() {
+        try {
+            List<TreeNode> nodes = service.findAllTreeNode();
+            return ApiResponse.ok(0, nodes);
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
     }
 }

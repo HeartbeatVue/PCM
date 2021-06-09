@@ -44,53 +44,34 @@
             , layer = layui.layer
             , util = layui.util
             , form = layui.form;
+        var $ = layui.$;
         //模拟数据1
         var data = [{
-            title: '江西'
-            , id: 1
-            , children: [{
-                title: '南昌'
-                , id: 1000
-                , children: [{
-                    title: '青山湖区'
-                    , id: 10001
-                }, {
-                    title: '高新区'
-                    , id: 10002
-                }]
-            }, {
-                title: '九江'
-                , id: 1001
-            }, {
-                title: '赣州'
-                , id: 1002
-            }]
-        }, {
-            title: '广西'
-            , id: 2
-            , children: [{
-                title: '南宁'
-                , id: 2000
-            }, {
-                title: '桂林'
-                , id: 2001
-            }]
-        }, {
-            title: '陕西'
-            , id: 3
-            , children: [{
-                title: '西安'
-                , id: 3000
-            }, {
-                title: '延安'
-                , id: 3001
-            }]
+
         }]
+        initTreeData()
         //常规用法  渲染表格
         tree.render({
             elem: '#test1' //默认是点击节点可进行收缩
-            ,data: data
+            , data: data
         });
+
+        //获取tree节点信息
+        function initTreeData() {
+            $.ajax({
+                url: '<%=path%>/org/allTreeNode'
+                , async: false//设置同步请求
+                , type: "GET"
+                , dataType: "json"
+                , contentType: "application/json"
+                , success: function (res) {
+                    data = res.data
+                }
+                , error: function (e) {
+
+                }
+            })
+        }
     })
 </script>
 
