@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface PcCheckInfoService {
     List<PcCheckInfo> AllRecord(Map<String,Object> param);
+    Integer delUserId(Integer id);
 }

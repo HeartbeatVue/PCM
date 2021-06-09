@@ -19,4 +19,12 @@ public class PcCheckInfoServiceImpl implements PcCheckInfoService {
         }
         return pcCheckInfoMapper.AllRecord(param);
     }
+
+    @Override
+    public Integer delUserId(Integer id) {
+        if (id == null){
+            throw new IllegalArgumentException("ID参数无效");
+        }
+        return pcCheckInfoMapper.delUserId(id);
+    }
 }

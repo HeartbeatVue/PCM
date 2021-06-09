@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqsd.dao.PcOrgInfoMapper">
+    <!--    <resultMap id="BaseResultMap" type="com.cqsd.entity.PcOrgInfo">-->
+    <!--        <id property="id" column="C_ID"/>-->
+    <!--    </resultMap>-->
+    <sql id="base">
+        C_ID AS id,C_ORG_FULL_NAME AS orgFullName ,C_ORG_SHROT_NAME AS orgShot,C_PARENT_ID AS parentId
+    </sql>
+    <select id="findAllRootNode" resultType="com.cqsd.entity.PcOrgInfo">
+        SELECT
+        <include refid="base"/>
+        FROM pcm.PC_ORG_INFO WHERE C_PARENT_ID IS NULL
+    </select>
+    <select id="findByIdSearchNode" resultType="com.cqsd.entity.PcOrgInfo">
+        SELECT
+        <include refid="base"/>
+        FROM pcm.PC_ORG_INFO WHERE C_PARENT_ID=#{parentId}
+    </select>
+
+</mapper>

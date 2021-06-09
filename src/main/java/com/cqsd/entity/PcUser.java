@@ -20,4 +20,5 @@ public class PcUser {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createDate;//创建时间
     private Integer orgId;//机构ID
+    private PcOrgInfo pcOrgInfo;//组织机构实体类
 }
