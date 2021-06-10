@@ -34,8 +34,8 @@
     </div>
     <div class="layui-col-xs9">
         <div id="form_div" style="display: none">
-            <form class="layui-form" lay-filter="orgInfo" action="">
-                <input name="id" style="display: none">
+            <form class="layui-form" lay-filter="orgInfo" >
+                <input name="id" style="display: none"/>
                 <label class="layui-form-label">编辑</label>
                 <div class="layui-form-item">
                     <label class="layui-form-label">机构全称</label>
@@ -99,8 +99,11 @@
             }
             , click: function (obj) {//点击节点的回调方法
                 var nodeData = obj.data;
-                var formData = {id: nodeData.id, shortName: nodeData.shortName, fullName: nodeData.title}
+                console.log(obj.data)
+                var formData = {id: nodeData.id, orgFullName: nodeData.filed, orgShort: nodeData.title,parentId:nodeData.pid}
+                console.log(formData)
                 form.val('orgInfo',formData)
+                console.log(form.val('orgInfo'))
                 $('#form_div').show();
             }
         });

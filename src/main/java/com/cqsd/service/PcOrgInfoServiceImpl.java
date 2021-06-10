@@ -37,6 +37,7 @@ public class PcOrgInfoServiceImpl implements PcOrgInfoService {
             root.setTitle(pcOrgInfo.getOrgFullName());
             root.setChildren(findAllChildren(pcOrgInfo.getId()));
             root.setFiled(pcOrgInfo.getOrgShort());
+            root.setPid(pcOrgInfo.getParentId());
             root.setSpread(true);
             nodes.add(root);
         });
@@ -55,6 +56,7 @@ public class PcOrgInfoServiceImpl implements PcOrgInfoService {
             node.setTitle(c.getOrgFullName());
             node.setFiled(c.getOrgShort());
             node.setChildren(findAllChildren(c.getId()));
+            node.setPid(c.getParentId());
             node.setSpread(true);
             cnode.add(node);
         });
