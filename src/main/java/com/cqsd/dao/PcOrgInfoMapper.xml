@@ -11,6 +11,14 @@
         INSERT INTO pcm.PC_ORG_INFO(C_ORG_FULL_NAME, C_ORG_SHROT_NAME, C_PARENT_ID)
         values (#{orgFullName}, #{orgShort}, #{parentId})
     </insert>
+    <update id="update">
+        UPDATE pcm.PC_ORG_INFO
+        SET C_ORG_FULL_NAME=#{orgFullName},
+            C_ORG_SHROT_NAME= #{orgShort},
+            C_PARENT_ID=#{parentId}
+        WHERE C_ID = #{id}
+    </update>
+
     <delete id="delete">
         DELETE
         FROM pcm.PC_ORG_INFO

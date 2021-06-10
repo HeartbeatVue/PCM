@@ -72,7 +72,7 @@ public class PcOrgInfoServiceImpl implements PcOrgInfoService {
             //新增
         } else {
             //修改
-
+            mapper.update(pcOrgInfo);
         }
     }
 

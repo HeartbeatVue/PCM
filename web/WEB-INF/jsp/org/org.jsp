@@ -23,6 +23,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="<%=path%>/resources/css/layui.css" media="all">
+    <link rel="stylesheet" href="<%=path%>/resources/css/dtree.css">
+    <link rel="stylesheet" href="<%=path%>/resources/font/dtreefont.css">
 </head>
 <body>
 <div class="layui-row">
@@ -34,7 +36,7 @@
     </div>
     <div class="layui-col-xs9">
         <div id="form_div" style="display: none">
-            <form class="layui-form" lay-filter="orgInfo" >
+            <form class="layui-form" lay-filter="orgInfo" id="orgFrom">
                 <input name="id" style="display: none"/>
                 <label class="layui-form-label">编辑</label>
                 <div class="layui-form-item">
@@ -54,8 +56,9 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">上级机构ID</label>
                     <div class="layui-input-block">
-                        <input type="number" name="parentId" required lay-verify="required" placeholder="请输入上级机构"
-                               autocomplete=" off" class="layui-input">
+                        <%--                        <input type="number" name="parentId" required lay-verify="required" placeholder="请输入上级机构"--%>
+                        <%--                               autocomplete=" off" class="layui-input">--%>
+                        <ul id="dataTree1" name="parentId" class="dtree" data-id="0"></ul>
                     </div>
                 </div>
                 <%-- 提交按钮--%>
@@ -73,6 +76,26 @@
 </body>
 <script src="<%=path%>/resources/layui.js" charset="utf-8"></script>
 <script>
+    layui.extend({
+        dtree: '{/}<%=path%>/resources/dtree'   // {/}的意思即代表采用自有路径，即不跟随 base 路径
+    }).use(['dtree'], function () {
+        var $ = layui.$;
+        var dtree = layui.dtree;
+        dtree.render({
+            elem: "#dataTree1",
+            width: '350px',
+            url: "<%=path%>/org/allTreeNode",
+            method: 'GET',
+            dataStyle: "layuiStyle",  //使用layui风格的数据格式
+            select: true,
+            response: {message: "msg", statusCode: 0},  //修改response中返回数据的定义
+            selectInputName: {
+                nodeId: "parentId"
+            }
+        });
+    });
+
+
     layui.use(["tree", "util", "form"], function () {
         var tree = layui.tree
             , layer = layui.layer
@@ -80,7 +103,7 @@
             , form = layui.form;
         var $ = layui.$;
         //模拟数据1
-        var data = [{}]
+        var data = []
         initTreeData()
         //常规用法  渲染表格
         tree.render({
@@ -100,9 +123,14 @@
             , click: function (obj) {//点击节点的回调方法
                 var nodeData = obj.data;
                 console.log(obj.data)
-                var formData = {id: nodeData.id, orgFullName: nodeData.filed, orgShort: nodeData.title,parentId:nodeData.pid}
+                var formData = {
+                    id: nodeData.id,
+                    orgFullName: nodeData.filed,
+                    orgShort: nodeData.title,
+                    parentId: nodeData.pid
+                }
                 console.log(formData)
-                form.val('orgInfo',formData)
+                form.val('orgInfo', formData)
                 console.log(form.val('orgInfo'))
                 $('#form_div').show();
             }
@@ -114,11 +142,19 @@
 
         //给新增按钮添加事件
         $('#addBtn').on('click', function () {
+            $("#orgFrom")[0].reset();
             $('#form_div').show();
         })
         $('#save').on("click", function () {
-            save()
+            // save()
+            master(save)
+
         })
+
+        function master(func) {
+            func()
+            $("#orgFrom")[0].reset();
+        }
 
         //获取tree节点信息
         function initTreeData() {
@@ -152,7 +188,6 @@
                 , success: function (res) {
                     if (res.code === 1) {
                         layer.msg(res.msg)
-                        return;
                     } else {
                         layer.msg()
                     }

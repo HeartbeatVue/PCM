@@ -38,4 +38,6 @@ public interface PcOrgInfoMapper {
      * @return 删除成功或失败
      */
     int delete(Integer id);
+
+    void update(PcOrgInfo pcOrgInfo);
 }

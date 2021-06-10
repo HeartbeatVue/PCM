@@ -53,6 +53,7 @@ public class OrgController {
         }
     }
 
+
     @Transactional
     @ResponseBody
     @GetMapping(value = "/deleteId/{id}")
