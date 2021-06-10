@@ -16,4 +16,8 @@ public class TreeNode {
     private Integer id;//ID
     private String title;//标题
     private List<TreeNode> children;//子节点
+    private Boolean Spread=false;//是否展开
+    private String filed;//全称
+    private Integer pid;//上级机构id
+
 }

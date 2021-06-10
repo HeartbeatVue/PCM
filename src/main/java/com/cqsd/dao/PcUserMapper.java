@@ -41,4 +41,11 @@ public interface PcUserMapper {
      * @param user 用户所有信息
      */
     void updateUser(PcUser user);
+
+    /**
+     * 查询用户机构
+     * @param orgId 组织机构ID
+     * @return 查询结果
+     */
+    Integer findUserOrg(Integer orgId);
 }

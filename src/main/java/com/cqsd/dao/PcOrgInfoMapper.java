@@ -25,4 +25,19 @@ public interface PcOrgInfoMapper {
      * @return 子节点
      */
     List<PcOrgInfo> findByIdSearchNode(Integer parentId);
+
+    /**
+     * 增加机构数据
+     * @param pcOrgInfo 实体类
+     */
+    void addOrg(PcOrgInfo pcOrgInfo);
+
+    /**
+     * 根据id删除对象
+     * @param id 机构表单的主键
+     * @return 删除成功或失败
+     */
+    int delete(Integer id);
+
+    void update(PcOrgInfo pcOrgInfo);
 }
