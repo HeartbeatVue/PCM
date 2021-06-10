@@ -12,7 +12,7 @@
         <result column="C_STATUS" property="status"/>
         <result column="C_USER_NAME" property="username"/>
         <result column="C_CREATE_DATE" property="createDate"/>
-<!--        <result column="C_ORG_ID" property="orgId"/>-->
+        <!--        <result column="C_ORG_ID" property="orgId"/>-->
         <association property="pcOrgInfo" javaType="com.cqsd.entity.PcOrgInfo">
             <id column="ORG_ID" property="id"/>
             <result column="ShrotName" property="orgShort"/>
@@ -68,5 +68,10 @@
                 C_ID LIKE concat(#{id},"%")
             </if>
         </where>
+    </select>
+    <select id="findUserOrg" resultType="java.lang.Integer">
+        SELECT count(C_ID)
+        from pcm.PC_USER
+        where C_ORG_ID = #{orgId}
     </select>
 </mapper>

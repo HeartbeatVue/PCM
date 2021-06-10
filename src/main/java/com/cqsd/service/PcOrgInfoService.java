@@ -8,10 +8,18 @@
 
 package com.cqsd.service;
 
+import com.cqsd.entity.PcOrgInfo;
 import com.cqsd.utli.TreeNode;
 
 import java.util.List;
 
 public interface PcOrgInfoService {
     List<TreeNode> findAllTreeNode();
+
+    void save(PcOrgInfo pcOrgInfo);
+    /**
+     * 根据id删除对象
+     * @param id 机构表单的主键
+     */
+    void delete(Integer id);
 }
